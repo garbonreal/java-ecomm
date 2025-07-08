@@ -1,0 +1,34 @@
+services:
+  swagger-ui:
+    image: swaggerapi/swagger-ui:v5.17.14
+    environment:
+    - BASE_URL=/swagger-ui
+    - URLS
+    - OAUTH_CLIENT_ID=swagger-ui
+    - OAUTH_USE_PKCE=true
+    networks:
+      - ecomm-network
+  postgres:
+    image: debezium/postgres:16-alpine
+    build: ./docker/postgres
+    hostname: ${POSTGRES_HOST}
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    volumes:
+      - ./docker/postgres/postgresql.conf.sample:/usr/share/postgresql/postgresql.conf.sample
+      - ./postgres_init.sql:/docker-entrypoint-initdb.d/postgres_init.sql
+      - postgres:/var/lib/postgresql/data
+    command: postgres -c 'max_connections=500'
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    networks:
+      - ecomm-network
+
+networks:
+  ecomm-network:
+    driver: bridge
+    name: ecomm-network
+
+volumes:
+  postgres:
