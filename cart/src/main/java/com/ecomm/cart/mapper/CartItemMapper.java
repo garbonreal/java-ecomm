@@ -2,6 +2,7 @@ package com.ecomm.cart.mapper;
 
 import com.ecomm.cart.model.CartItem;
 import com.ecomm.cart.viewmodel.CartItemGetVm;
+import com.ecomm.cart.viewmodel.CartItemPostVm;
 
 import java.util.List;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,24 @@ public class CartItemMapper {
             .customerId(cartItem.getCustomerId())
             .productId(cartItem.getProductId())
             .quantity(cartItem.getQuantity())
+            .build();
+    }
+
+    public CartItem toCartItem(CartItemPostVm cartItemPostVm, String currentUserId) {
+        return CartItem
+            .builder()
+            .customerId(currentUserId)
+            .productId(cartItemPostVm.productId())
+            .quantity(cartItemPostVm.quantity())
+            .build();
+    }
+
+    public CartItem toCartItem(String currentUserId, Long productId, int quantity) {
+        return CartItem
+            .builder()
+            .customerId(currentUserId)
+            .productId(productId)
+            .quantity(quantity)
             .build();
     }
 

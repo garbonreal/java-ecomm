@@ -1,4 +1,14 @@
 services:
+  cart:
+    build: ./cart
+    ports:
+      - "8084:8084"
+    environment:
+    - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/cart
+    - SERVER_SERVLET_CONTEXT_PATH=/cart
+    - SERVER_PORT
+    networks:
+    - ecomm-network
   swagger-ui:
     image: swaggerapi/swagger-ui:v5.17.14
     environment:
